@@ -7,5 +7,6 @@
     "Report": false,
     "Auth": false,
     "Category": false,
-    "Dashboard": false
+    "Dashboard": false,
+    "Discount": true
 }
