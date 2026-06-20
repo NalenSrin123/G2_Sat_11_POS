@@ -33,6 +33,7 @@ class AuthServiceProvider extends ModuleServiceProvider
         EventServiceProvider::class,
         RouteServiceProvider::class,
     ];
+ 
 
     /**
      * Define module schedules.
