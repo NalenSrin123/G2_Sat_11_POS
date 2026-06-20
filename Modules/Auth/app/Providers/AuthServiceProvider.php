@@ -6,23 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        //
-    }
-
-    public function boot(): void
-    {
-        // Register migrations
-        $this->loadMigrationsFrom(module_path('Auth', 'database/migrations'));
-
-    /**
-     * Command classes to register.
-     *
-     * @var string[]
-     */
-    // protected array $commands = [];
-
     /**
      * Provider classes to register.
      *
@@ -32,12 +15,29 @@ class AuthServiceProvider extends ServiceProvider
         EventServiceProvider::class,
         RouteServiceProvider::class,
     ];
- 
+
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        // Register migrations
+        $this->loadMigrationsFrom(
+            module_path('Auth', 'database/migrations')
+        );
+    }
+
+    /**
+     * Command classes to register.
+     *
+     * @var string[]
+     */
+    // protected array $commands = [];
 
     /**
      * Define module schedules.
-     * 
-     * @param $schedule
      */
     // protected function configureSchedules(Schedule $schedule): void
     // {
