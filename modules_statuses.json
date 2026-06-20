@@ -5,7 +5,7 @@
     "Order": false,
     "Kitchen": false,
     "Report": false,
-    "Auth": false,
+    "Auth": true,
     "Category": false,
     "Dashboard": false
 }
