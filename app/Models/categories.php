@@ -3,16 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Product;
 
-class categories extends Model
+class Categories extends Model
 {
+    protected $table = 'categories';
     protected $fillable = [
         'name',
         'image_url',
         'is_active',
         'created_by',
     ];
-    public function products(){
+
+    public function products()
+    {
         return $this->hasMany(Product::class);
     }
 }
