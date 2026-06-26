@@ -3,6 +3,7 @@
 namespace Modules\Auth\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->loadViewsFrom(module_path('Auth', 'resources/views'), 'auth');
+
         // Register migrations
         $this->loadMigrationsFrom(
             module_path('Auth', 'database/migrations')
