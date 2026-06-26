@@ -1,11 +1,13 @@
 {
     "User": false,
     "Waiter": false,
-    "Product": false,
-    "Order": false,
+    "Product": true,
+    "Order": true,
     "Kitchen": false,
     "Report": false,
     "Auth": true,
-    "Category": false,
-    "Dashboard": false
+    "Category": true,
+    "Dashboard": false,
+    "Restaurant": true,
+    "Stock": true
 }

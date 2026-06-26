@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image_url')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

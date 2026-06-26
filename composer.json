@@ -32,6 +32,8 @@
             "Modules\\Order\\": "Modules/Order/app/",
             "Modules\\Product\\": "Modules/Product/app/",
             "Modules\\Report\\": "Modules/Report/app/",
+            "Modules\\Restaurant\\": "Modules/Restaurant/app/",
+            "Modules\\Stock\\": "Modules/Stock/app/",
             "Modules\\User\\": "Modules/User/app/",
             "Modules\\Waiter\\": "Modules/Waiter/app/",
             "Database\\Factories\\": "database/factories/",
