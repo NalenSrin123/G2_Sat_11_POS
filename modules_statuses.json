@@ -7,5 +7,6 @@
     "Report": false,
     "Auth": true,
     "Category": false,
-    "Dashboard": false
+    "Dashboard": false,
+    "Customers": true
 }

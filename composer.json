@@ -27,6 +27,7 @@
             "App\\": "app/",
             "Modules\\Auth\\": "Modules/Auth/app/",
             "Modules\\Category\\": "Modules/Category/app/",
+            "Modules\\Customers\\": "Modules/Customers/app/",
             "Modules\\Dashboard\\": "Modules/Dashboard/app/",
             "Modules\\Kitchen\\": "Modules/Kitchen/app/",
             "Modules\\Order\\": "Modules/Order/app/",
