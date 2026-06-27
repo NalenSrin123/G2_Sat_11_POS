@@ -2,28 +2,10 @@
 
 namespace Modules\Auth\Providers;
 
-use Nwidart\Modules\Support\ModuleServiceProvider;
-use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\ServiceProvider;
 
-class AuthServiceProvider extends ModuleServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * The name of the module.
-     */
-    protected string $name = 'Auth';
-
-    /**
-     * The lowercase version of the module name.
-     */
-    protected string $nameLower = 'auth';
-
-    /**
-     * Command classes to register.
-     *
-     * @var string[]
-     */
-    // protected array $commands = [];
-
     /**
      * Provider classes to register.
      *
@@ -34,10 +16,28 @@ class AuthServiceProvider extends ModuleServiceProvider
         RouteServiceProvider::class,
     ];
 
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        // Register migrations
+        $this->loadMigrationsFrom(
+            module_path('Auth', 'database/migrations')
+        );
+    }
+
+    /**
+     * Command classes to register.
+     *
+     * @var string[]
+     */
+    // protected array $commands = [];
+
     /**
      * Define module schedules.
-     * 
-     * @param $schedule
      */
     // protected function configureSchedules(Schedule $schedule): void
     // {

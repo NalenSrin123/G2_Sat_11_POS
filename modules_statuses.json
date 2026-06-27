@@ -5,8 +5,12 @@
     "Order": false,
     "Kitchen": false,
     "Report": false,
-    "Auth": false,
+    "Auth": true,
     "Category": false,
+<<<<<<< HEAD
     "Dashboard": false,
     "Discount": true
+=======
+    "Dashboard": false
+>>>>>>> 1be150ee9fc1845cb77d25b1daa40102f17beda7
 }
