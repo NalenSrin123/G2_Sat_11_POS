@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date("period_end");
             $table->foreignId("generated_by")->constrained("users")->onDelete("cascade");
             $table->text("payload");
-            $table->timestamps($precision = "generated_at");
+            $table->timestamps();
         });
     }
 
