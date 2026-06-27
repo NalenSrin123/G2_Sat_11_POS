@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
     libonig-dev \
-    libxml2-dev
+    libxml2-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install \
@@ -21,7 +22,7 @@ RUN docker-php-ext-install \
     bcmath \
     zip
 
-# Enable rewrite
+# Enable Apache rewrite
 RUN a2enmod rewrite
 
 # Install Composer
@@ -31,9 +32,23 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Create Laravel directories BEFORE composer install
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/testing \
+    bootstrap/cache
+
+RUN chmod -R 775 storage bootstrap/cache
 
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Install Composer packages
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
 
 # Apache public folder
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
@@ -44,9 +59,10 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 
 EXPOSE 80
 
-CMD php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache && \
-    php artisan migrate --force && \
-    php artisan db:seed --force && \
-    apache2-foreground
+CMD sh -c "\
+php artisan config:cache && \
+php artisan route:cache && \
+php artisan view:cache && \
+php artisan migrate --force && \
+php artisan db:seed --force && \
+exec apache2-foreground"
