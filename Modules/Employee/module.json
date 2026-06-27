@@ -1,10 +1,11 @@
 {
     "name": "Employee",
-    "alias": "Employee",
+    "alias": "employee",
     "description": "",
-    "version": "1.0.0",
-    "enabled": true,
+    "keywords": [],
+    "priority": 0,
     "providers": [
         "Modules\\Employee\\Providers\\EmployeeServiceProvider"
-    ]
+    ],
+    "files": []
 }
