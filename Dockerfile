@@ -30,24 +30,10 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy composer files first (better Docker cache)
-COPY composer.json composer.lock ./
-
-# Configure Composer
-RUN composer config --global preferred-install source \
-    && composer config --global process-timeout 2000
-
-# Install dependencies
-RUN composer install \
-    --no-dev \
-    --no-interaction \
-    --prefer-source \
-    --optimize-autoloader
-
-# Copy application
+# Copy the entire Laravel project
 COPY . .
 
-# Create Laravel directories
+# Create required Laravel directories
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
@@ -56,10 +42,21 @@ RUN mkdir -p \
     bootstrap/cache
 
 # Set permissions
-RUN chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache
 
-# Apache document root
+# Configure Composer
+RUN composer config --global preferred-install source && \
+    composer config --global process-timeout 2000
+
+# Install dependencies
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-source \
+    --optimize-autoloader
+
+# Set Apache document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
