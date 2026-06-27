@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Product\Http\Controllers\ProductController;
 use Modules\Product\Http\Controllers\ProductVisibilityController;
+use App\Http\Controllers\CategoriesController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('products', ProductController::class)->names('product');
     Route::apiResource('product-visibilities', ProductVisibilityController::class)->names('product-visibility');
+    Route::apiResource('categories', CategoriesController::class); 
 });
 
 Route::get('/Product', [ProductController::class, 'index']);
