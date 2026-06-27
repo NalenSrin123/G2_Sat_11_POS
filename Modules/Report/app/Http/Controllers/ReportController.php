@@ -3,6 +3,7 @@
 namespace Modules\Report\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Report;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -12,45 +13,106 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('report::index');
+        $report = Report::with('user')->get();
+
+        return response()->json([
+            'Message' => 'Report Retrived Successfully',
+            'report' => $report,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('report::create');
-    }
+    
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'report_type' => 'required|string',
+            'period_start' => 'required|date',
+            'period_end' => 'required|date|after_or_equal:period_start',
+            'generated_by' => 'required|exists:users,id',
+            'payload' => 'nullable|string',
+            'generated_at' => 'nullable|date',
+        ]);
+
+        $report = Report::create($validated);
+
+        return response()->json([
+            'message' => 'Report created successfully',
+            'report' => $report,
+        ], 201);
+    }
 
     /**
-     * Show the specified resource.
+     * Display the specified resource.
      */
     public function show($id)
     {
-        return view('report::show');
+        $report = Report::with('user')->find($id);
+
+        if (!$report) {
+            return response()->json([
+                'message' => 'Report not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Report retrieved successfully',
+            'report' => $report,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('report::edit');
-    }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+        $report = Report::find($id);
+
+        if (!$report) {
+            return response()->json([
+                'message' => 'Report not found',
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'report_type' => 'required|string',
+            'period_start' => 'required|date',
+            'period_end' => 'required|date|after_or_equal:period_start',
+            'generated_by' => 'required|exists:users,id',
+            'payload' => 'nullable|string',
+            'generated_at' => 'nullable|date',
+        ]);
+
+        $report->update($validated);
+
+        return response()->json([
+            'message' => 'Report updated successfully',
+            'report' => $report,
+        ]);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id)
+    {
+        $report = Report::find($id);
+
+        if (!$report) {
+            return response()->json([
+                'message' => 'Report not found',
+            ], 404);
+        }
+
+        $report->delete();
+
+        return response()->json([
+            'message' => 'Report deleted successfully',
+        ]);
+    }
 }
