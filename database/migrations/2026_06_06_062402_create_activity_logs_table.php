@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer("target_id");
             $table->text("details")->nullable();
             $table->string("ip_address")->nullable();
-            $table->timestamps("created_at");
+            $table->timestamps();
         });
     }
 

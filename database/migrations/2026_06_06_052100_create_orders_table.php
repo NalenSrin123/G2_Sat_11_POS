@@ -50,15 +50,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('stock_logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('changed_by')->nullable();
-            $table->integer('change_qty')->default(0);
-            $table->string('reason', 255);
-            $table->timestamps();
-        });
     }
 
     /**
@@ -66,7 +57,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock_logs');
         Schema::dropIfExists('order_status_logs');
         Schema::dropIfExists('order_items');
         Schema::dropIfExists('orders');

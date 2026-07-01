@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("key")->unique();
             $table->text("value");
             $table->foreignId("updated_by")->constrained("users")->onDelete("cascade");
-            $table->timestamps("updated_at");
+            $table->timestamps();
         });
     }
 
