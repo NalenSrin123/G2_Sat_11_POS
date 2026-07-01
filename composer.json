@@ -37,6 +37,7 @@
             "Modules\\Stock\\": "Modules/Stock/app/",
             "Modules\\User\\": "Modules/User/app/",
             "Modules\\Waiter\\": "Modules/Waiter/app/",
+            "Modules\\Discount\\": "Modules/Discount/app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

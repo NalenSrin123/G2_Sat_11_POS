@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("backup_type");
             $table->text("status");
             $table->string("file_path")->nullable();
-            $table->timestamps("created_at");
+            $table->timestamps();
         });
     }
 
