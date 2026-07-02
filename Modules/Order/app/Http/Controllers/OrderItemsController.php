@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderItemsController extends Controller
 {
+
     public function index()
     {
         $items = OrderItem::with(['order', 'product'])->latest()->get();
