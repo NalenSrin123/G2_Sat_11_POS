@@ -15,7 +15,7 @@ class Product extends Model
     'created_by'
     ];
     public function category(){
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function visibility()
