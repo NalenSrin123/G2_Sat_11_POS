@@ -49,16 +49,6 @@ return new class extends Migration
             $table->timestamp('changed_at')->useCurrent();
             $table->timestamps();
         });
-
-        Schema::create('stock_logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('changed_by')->nullable();
-            $table->integer('change_qty')->default(0);
-            $table->string('reason', 255);
-            $table->timestamps();
-        });
     }
 
     /**

@@ -21,7 +21,6 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->boolean('can_order')->default(false);
             $table->timestamp('expires_at');
-            $table->timestamp('created_at')->useCurrent();
             $table->timestamps();
         });
     }
