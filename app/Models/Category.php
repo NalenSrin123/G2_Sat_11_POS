@@ -7,7 +7,6 @@ use App\Models\Product;
 
 class Category extends Model
 {
-    protected $table = 'categories';
     protected $fillable = [
         'name',
         'image_url',
