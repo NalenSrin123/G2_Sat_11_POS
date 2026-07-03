@@ -31,11 +31,11 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('role')->get();
+        $user = User::with('role')->get();
 
         return response()->json([
             "message" => "Retrieved All Users Successfully",
-            "users" => $users
+            "user" => $user
         ], 200);
     }
 

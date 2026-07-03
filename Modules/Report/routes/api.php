@@ -9,6 +9,6 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
 Route::get('/report', [ReportController::class, 'index']);
 Route::get('/report/{id}', [ReportController::class, 'show']);
-Route::delete('/report/{id}', [ReportController::class, 'destory']);
-Route::put('/report', [ReportController::class, 'update']);
+Route::delete('/report/{id}', [ReportController::class, 'destroy']);
+Route::put('/report/{id}', [ReportController::class, 'update']);
 Route::post('/report', [ReportController::class, 'store']);
