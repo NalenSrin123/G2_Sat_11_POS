@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 
-class Categories extends Model
+class Category extends Model
 {
-    protected $table = 'categories';
     protected $fillable = [
         'name',
         'image_url',
