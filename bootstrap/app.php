@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
             foreach (glob(base_path('Modules/*/routes/api.php')) ?: [] as $routeFile) {
                 Route::middleware('api')
                     ->prefix('api')
+                    ->name('api.')
                     ->group($routeFile);
             }
 
