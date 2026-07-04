@@ -11,18 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            // អាន Route របស់ Module Customers
-            if (file_exists(base_path('Modules/Customers/routes/api.php'))) {
+            foreach (glob(base_path('Modules/*/routes/api.php')) ?: [] as $routeFile) {
                 Route::middleware('api')
                     ->prefix('api')
-                    ->group(base_path('Modules/Customers/routes/api.php'));
+                    ->group($routeFile);
             }
-            
-            // អាន Route របស់ Module Auth
-            if (file_exists(base_path('Modules/Auth/routes/api.php'))) {
-                Route::middleware('api')
-                    ->prefix('api')
-                    ->group(base_path('Modules/Auth/routes/api.php'));
+
+            foreach (glob(base_path('Modules/*/routes/web.php')) ?: [] as $routeFile) {
+                Route::middleware('web')
+                    ->group($routeFile);
             }
         },
     )
