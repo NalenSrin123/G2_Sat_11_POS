@@ -11,6 +11,6 @@
     "Restaurant": true,
     "Stock": true,
     "Discount": true,
-    "Customers": true
+    "Customers": true,
+    "Role": true
 }
-
