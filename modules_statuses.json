@@ -5,7 +5,12 @@
     "Order": false,
     "Kitchen": false,
     "Report": false,
-    "Auth": true,
+    "Auth": false,
     "Category": false,
-    "Dashboard": false
+    "Dashboard": false,
+    "Restaurant": false,
+    "Stock": false,
+    "Discount": false,
+    "Customers": false
 }
+

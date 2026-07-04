@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
         });
     }
 

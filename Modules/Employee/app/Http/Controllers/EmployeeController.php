@@ -10,89 +10,105 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = Employee::with(['user', 'creator'])->get();
+        try {
+            $employees = Employee::with(['user', 'creator'])->get();
 
-        return response()->json([
-            'message' => 'Employees retrieved successfully',
-            'employees' => $employees
-        ]);
+            return response()->json([
+                'message' => 'Employees retrieved successfully',
+                'employees' => $employees
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to fetch employees',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'employee_no' => 'required|string|unique:employees,employee_no',
-            'hire_date' => 'required|date',
-            'salary' => 'required|numeric|min:0',
-            'shift' => 'required|string|max:50',
-            'created_by' => 'required|exists:users,id',
-        ]);
+        try {
+            $validated = $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'employee_no' => 'required|string|unique:employees,employee_no',
+                'hire_date' => 'required|date',
+                'salary' => 'required|numeric|min:0',
+                'shift' => 'required|string|max:50',
+                'created_by' => 'required|exists:users,id',
+            ]);
 
-        $employee = Employee::create($validated);
+            $employee = Employee::create($validated);
 
-        return response()->json([
-            'message' => 'Employee created successfully',
-            'employee' => $employee
-        ], 201);
+            return response()->json([
+                'message' => 'Employee created successfully',
+                'employee' => $employee
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to create employee',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function show($id)
     {
-        $employee = Employee::with(['user', 'creator'])->find($id);
+        try {
+            $employee = Employee::with(['user', 'creator'])->findOrFail($id);
 
-        if (!$employee) {
             return response()->json([
-                'message' => 'Employee not found'
+                'employee' => $employee
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Employee not found',
+                'error' => $e->getMessage(),
             ], 404);
         }
-
-        return response()->json([
-            'employee' => $employee
-        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $employee = Employee::find($id);
+        try {
+            $employee = Employee::findOrFail($id);
 
-        if (!$employee) {
+            $validated = $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'employee_no' => 'required|string|unique:employees,employee_no,' . $id,
+                'hire_date' => 'required|date',
+                'salary' => 'required|numeric|min:0',
+                'shift' => 'required|string|max:50',
+                'created_by' => 'required|exists:users,id',
+            ]);
+
+            $employee->update($validated);
+
             return response()->json([
-                'message' => 'Employee not found'
-            ], 404);
+                'message' => 'Employee updated successfully',
+                'employee' => $employee
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to update employee',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'employee_no' => 'required|string|unique:employees,employee_no,' . $id,
-            'hire_date' => 'required|date',
-            'salary' => 'required|numeric|min:0',
-            'shift' => 'required|string|max:50',
-            'created_by' => 'required|exists:users,id',
-        ]);
-
-        $employee->update($validated);
-
-        return response()->json([
-            'message' => 'Employee updated successfully',
-            'employee' => $employee
-        ]);
     }
 
     public function destroy($id)
     {
-        $employee = Employee::find($id);
+        try {
+            $employee = Employee::findOrFail($id);
+            $employee->delete();
 
-        if (!$employee) {
             return response()->json([
-                'message' => 'Employee not found'
-            ], 404);
+                'message' => 'Employee deleted successfully'
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to delete employee',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $employee->delete();
-
-        return response()->json([
-            'message' => 'Employee deleted successfully'
-        ]);
     }
 }

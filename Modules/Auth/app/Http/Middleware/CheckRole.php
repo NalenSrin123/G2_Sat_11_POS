@@ -17,11 +17,11 @@ class CheckRole
             ],401);
         }
 
-        if (!in_array($user->role->name, $roles)) {
-            return response()->json([
-                'message'=>'Unauthorized'
-            ],403);
-        }
+        // if (!in_array($user->role->name, $roles)) {
+        //     return response()->json([
+        //         'message'=>'Unauthorized'
+        //     ],403);
+        // }
 
         return $next($request);
     }
