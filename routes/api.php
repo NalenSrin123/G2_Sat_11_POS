@@ -61,11 +61,12 @@ use Modules\Waiter\Http\Controllers\WaiterController;
         Route::apiResource('order-status-logs', OrderStatusLogsController::class)->names('order-status-log');
         // Route::apiResource('kitchens', KitchenController::class)->names('kitchen');  I don't get this error, why there isn't fisnished for the controller. 
 
-        Route::get('/employees', [EmployeeController::class, 'index']);
-        Route::get('/employees/{id}', [EmployeeController::class, 'show']);
-        Route::post('/employees', [EmployeeController::class, 'store']);
-        Route::put('/employees/{id}', [EmployeeController::class, 'update']);
-        Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
+        Route::apiResource('employees', EmployeeController::class)->names('employees');
+        // Route::get('/employees', [EmployeeController::class, 'index']);
+        // Route::get('/employees/{id}', [EmployeeController::class, 'show']);
+        // Route::post('/employees', [EmployeeController::class, 'store']);
+        // Route::put('/employees/{id}', [EmployeeController::class, 'update']);
+        // Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
   
 
     Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
