@@ -1,0 +1,42 @@
+# Git
+.git
+.github
+.gitignore
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Composer
+vendor
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Laravel Storage
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+
+# Keep the folders
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+!storage/framework/testing/.gitignore
+
+# Bootstrap Cache
+bootstrap/cache/*
+!bootstrap/cache/.gitignore
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db

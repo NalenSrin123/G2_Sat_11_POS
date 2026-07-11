@@ -14,13 +14,21 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        try {
+            $categories = Category::all();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'All Category',
-            'data' => $categories,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'All Category',
+                'data' => $categories,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch categories',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -36,33 +44,41 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'image_url' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-            'created_by' => 'nullable|exists:users,id',
-        ]);
+        try {
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'image_url' => 'nullable|string|max:255',
+                'is_active' => 'boolean',
+                'created_by' => 'nullable|exists:users,id',
+            ]);
 
-        if ($validate->fails()) {
+            if ($validate->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error Validate',
+                    'data' => $validate->errors(),
+                ], 422);
+            }
+
+            $category = Category::create([
+                'name' => $request->name,
+                'image_url' => $request->image_url,
+                'is_active' => $request->is_active,
+                'created_by' => $request->created_by,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Created Category Successful',
+                'data' => $category,
+            ], 201);
+        } catch (\Throwable $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Error Validate',
-                'data' => $validate->errors(),
-            ], 422);
+                'message' => 'Failed to create category',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $category = Category::create([
-            'name' => $request->name,
-            'image_url' => $request->image_url,
-            'is_active' => $request->is_active,
-            'created_by' => $request->created_by,
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Created Category Successful',
-            'data' => $category,
-        ], 201);
     }
 
     /**
@@ -70,13 +86,21 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::findOrFail($id);
+        try {
+            $category = Category::findOrFail($id);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'success',
-            'data' => $category,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'success',
+                'data' => $category,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Category not found',
+                'error' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     /**
@@ -92,35 +116,43 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'image_url' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-            'created_by' => 'nullable|exists:users,id',
-        ]);
+        try {
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'image_url' => 'nullable|string|max:255',
+                'is_active' => 'boolean',
+                'created_by' => 'nullable|exists:users,id',
+            ]);
 
-        if ($validate->fails()) {
+            if ($validate->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'update fails',
+                    'data' => $validate->errors(),
+                ], 422);
+            }
+
+            $category = Category::findOrFail($id);
+
+            $category->update([
+                'name' => $request->name,
+                'image_url' => $request->image_url,
+                'is_active' => $request->is_active,
+                'created_by' => $request->created_by,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'update category success',
+                'data' => $category,
+            ], 200);
+        } catch (\Throwable $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'update fails',
-                'data' => $validate->errors(),
-            ], 422);
+                'message' => 'Failed to update category',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $category = Category::findOrFail($id);
-
-        $category->update([
-            'name' => $request->name,
-            'image_url' => $request->image_url,
-            'is_active' => $request->is_active,
-            'created_by' => $request->created_by,
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'update category success',
-            'data' => $category,
-        ], 200);
     }
 
     /**
@@ -128,13 +160,21 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'delete success',
-            'data' => $category,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'delete success',
+                'data' => $category,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to delete category',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

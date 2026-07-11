@@ -11,95 +11,135 @@ class RestaurantTableController extends Controller
 {
     public function index()
     {
-        $tables = RestaurantTable::all();
+        try {
+            $tables = RestaurantTable::all();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'success',
-            'data' => $tables,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'success',
+                'data' => $tables,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch tables',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'capacity' => 'required|integer|min:1',
-            'status' => 'required|in:available,occupied,reserved',
-        ]);
+        try {
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'capacity' => 'required|integer|min:1',
+                'status' => 'required|in:available,occupied,reserved',
+            ]);
 
-        if ($validate->fails()) {
+            if ($validate->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error',
+                    'data' => $validate->errors(),
+                ], 422);
+            }
+
+            $table = RestaurantTable::create([
+                'name' => $request->name,
+                'capacity' => $request->capacity,
+                'status' => $request->status,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Create success',
+                'data' => $table,
+            ], 201);
+        } catch (\Throwable $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Error',
-                'data' => $validate->errors(),
-            ], 422);
+                'message' => 'Failed to create table',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $table = RestaurantTable::create([
-            'name' => $request->name,
-            'capacity' => $request->capacity,
-            'status' => $request->status,
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Create success',
-            'data' => $table,
-        ], 201);
     }
 
     public function show($id)
     {
-        $table = RestaurantTable::findOrFail($id);
+        try {
+            $table = RestaurantTable::findOrFail($id);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'success',
-            'data' => $table,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'success',
+                'data' => $table,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Table not found',
+                'error' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'capacity' => 'required|integer|min:1',
-            'status' => 'required|in:available,occupied,reserved',
-        ]);
+        try {
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'capacity' => 'required|integer|min:1',
+                'status' => 'required|in:available,occupied,reserved',
+            ]);
 
-        if ($validate->fails()) {
+            if ($validate->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error',
+                    'data' => $validate->errors(),
+                ], 422);
+            }
+
+            $table = RestaurantTable::findOrFail($id);
+
+            $table->update([
+                'name' => $request->name,
+                'capacity' => $request->capacity,
+                'status' => $request->status,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Update success',
+                'data' => $table,
+            ], 200);
+        } catch (\Throwable $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Error',
-                'data' => $validate->errors(),
-            ], 422);
+                'message' => 'Failed to update table',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $table = RestaurantTable::findOrFail($id);
-
-        $table->update([
-            'name' => $request->name,
-            'capacity' => $request->capacity,
-            'status' => $request->status,
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Update success',
-            'data' => $table,
-        ], 200);
     }
 
     public function destroy($id)
     {
-        $table = RestaurantTable::findOrFail($id);
-        $table->delete();
+        try {
+            $table = RestaurantTable::findOrFail($id);
+            $table->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Delete success',
-            'data' => $table,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Delete success',
+                'data' => $table,
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to delete table',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

@@ -1,8 +1,4 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Modules\Discount\Http\Controllers\DiscountController;
+// API routes are registered centrally in routes/api.php.
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('discounts', DiscountController::class)->names('discount');
-});

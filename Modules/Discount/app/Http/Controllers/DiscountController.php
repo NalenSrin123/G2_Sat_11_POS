@@ -4,7 +4,7 @@ namespace Modules\Discount\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Discount\Models\Discount;
+use App\Models\Discount;
 
 class DiscountController extends Controller
 {
@@ -13,12 +13,19 @@ class DiscountController extends Controller
      */
     public function index()
     {
-        $discounts = Discount::all();
+        try {
+            $discounts = Discount::all();
 
-        return response()->json([
-            'message' => 'Discounts retrieved successfully.',
-            'discounts' => $discounts
-        ]);
+            return response()->json([
+                'message' => 'Discounts retrieved successfully.',
+                'discounts' => $discounts
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to fetch discounts',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -34,20 +41,27 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'type'        => 'required|in:percentage,fixed',
-            'value'       => 'required|numeric|min:0',
-            'description' => 'nullable|string',
-            'status'      => 'boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name'        => 'required|string|max:255',
+                'type'        => 'required|in:percentage,fixed',
+                'value'       => 'required|numeric|min:0',
+                'description' => 'nullable|string',
+                'status'      => 'boolean',
+            ]);
 
-        $discount = Discount::create($validated);
+            $discount = Discount::create($validated);
 
-        return response()->json([
-            'message' => 'Discount created successfully.',
-            'discount' => $discount
-        ], 201);
+            return response()->json([
+                'message' => 'Discount created successfully.',
+                'discount' => $discount
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to create discount',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -55,11 +69,18 @@ class DiscountController extends Controller
      */
     public function show($id)
     {
-        $discount = Discount::findOrFail($id);
+        try {
+            $discount = Discount::findOrFail($id);
 
-        return response()->json([
-            'discount' => $discount
-        ]);
+            return response()->json([
+                'discount' => $discount
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Discount not found',
+                'error' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     /**
@@ -77,22 +98,29 @@ class DiscountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $discount = Discount::findOrFail($id);
+        try {
+            $discount = Discount::findOrFail($id);
 
-        $validated = $request->validate([
-            'name'        => 'sometimes|required|string|max:255',
-            'type'        => 'sometimes|required|in:percentage,fixed',
-            'value'       => 'sometimes|required|numeric|min:0',
-            'description' => 'nullable|string',
-            'status'      => 'boolean',
-        ]);
+            $validated = $request->validate([
+                'name'        => 'sometimes|required|string|max:255',
+                'type'        => 'sometimes|required|in:percentage,fixed',
+                'value'       => 'sometimes|required|numeric|min:0',
+                'description' => 'nullable|string',
+                'status'      => 'boolean',
+            ]);
 
-        $discount->update($validated);
+            $discount->update($validated);
 
-        return response()->json([
-            'message' => 'Discount updated successfully.',
-            'discount' => $discount
-        ]);
+            return response()->json([
+                'message' => 'Discount updated successfully.',
+                'discount' => $discount
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to update discount',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -100,12 +128,18 @@ class DiscountController extends Controller
      */
     public function destroy($id)
     {
-        $discount = Discount::findOrFail($id);
+        try {
+            $discount = Discount::findOrFail($id);
+            $discount->delete();
 
-        $discount->delete();
-
-        return response()->json([
-            'message' => 'Discount deleted successfully.'
-        ]);
+            return response()->json([
+                'message' => 'Discount deleted successfully.'
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to delete discount',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
