@@ -24,9 +24,9 @@ use Modules\Waiter\Http\Controllers\WaiterController;
 
 
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
+    // Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
+    // Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+    // Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
     Route::post('/register', [UserController::class, 'store']);
     Route::apiResource('roles', RoleController::class)->names('role');
 
