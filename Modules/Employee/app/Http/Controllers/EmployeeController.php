@@ -11,7 +11,7 @@ class EmployeeController extends Controller
     public function index()
     {
         try {
-            $employees = Employee::with(['user', 'creator'])->get();
+            $employees = Employee::with(['user'])->get();
 
             return response()->json([
                 'message' => 'Employees retrieved successfully',
@@ -54,7 +54,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
         try {
-            $employee = Employee::with(['user', 'creator'])->findOrFail($id);
+            $employee = Employee::with(['user'])->findOrFail($id);
 
             return response()->json([
                 'employee' => $employee
