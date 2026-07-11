@@ -12,7 +12,14 @@ class KitchenController extends Controller
      */
     public function index()
     {
-        return view('kitchen::index');
+        try {
+            return view('kitchen::index');
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to render kitchen page',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -20,7 +27,14 @@ class KitchenController extends Controller
      */
     public function create()
     {
-        return view('kitchen::create');
+        try {
+            return view('kitchen::create');
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to render kitchen create page',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -33,7 +47,14 @@ class KitchenController extends Controller
      */
     public function show($id)
     {
-        return view('kitchen::show');
+        try {
+            return view('kitchen::show');
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to render kitchen show page',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -41,7 +62,14 @@ class KitchenController extends Controller
      */
     public function edit($id)
     {
-        return view('kitchen::edit');
+        try {
+            return view('kitchen::edit');
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to render kitchen edit page',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

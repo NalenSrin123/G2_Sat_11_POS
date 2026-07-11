@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Customers\Http\Controllers\CustomersController;
+use Modules\Customers\Http\Controllers\Api\CustomersController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('customers', CustomersController::class)->names('customers');

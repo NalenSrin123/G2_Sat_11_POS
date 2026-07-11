@@ -13,36 +13,48 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $report = Report::with('user')->get();
+        try {
+            $report = Report::with('user')->get();
 
-        return response()->json([
-            'Message' => 'Report Retrived Successfully',
-            'report' => $report,
-        ]);
+            return response()->json([
+                'Message' => 'Report Retrived Successfully',
+                'report' => $report,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to fetch reports',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
-
-    
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'report_type' => 'required|string',
-            'period_start' => 'required|date',
-            'period_end' => 'required|date|after_or_equal:period_start',
-            'generated_by' => 'required|exists:users,id',
-            'payload' => 'nullable|string',
-            'generated_at' => 'nullable|date',
-        ]);
+        try {
+            $validated = $request->validate([
+                'report_type' => 'required|string',
+                'period_start' => 'required|date',
+                'period_end' => 'required|date|after_or_equal:period_start',
+                'generated_by' => 'required|exists:users,id',
+                'payload' => 'nullable|string',
+                'generated_at' => 'nullable|date',
+            ]);
 
-        $report = Report::create($validated);
+            $report = Report::create($validated);
 
-        return response()->json([
-            'message' => 'Report created successfully',
-            'report' => $report,
-        ], 201);
+            return response()->json([
+                'message' => 'Report created successfully',
+                'report' => $report,
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to create report',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -50,50 +62,50 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        $report = Report::with('user')->find($id);
+        try {
+            $report = Report::with('user')->findOrFail($id);
 
-        if (!$report) {
+            return response()->json([
+                'message' => 'Report retrieved successfully',
+                'report' => $report,
+            ]);
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Report not found',
+                'error' => $e->getMessage(),
             ], 404);
         }
-
-        return response()->json([
-            'message' => 'Report retrieved successfully',
-            'report' => $report,
-        ]);
     }
-
-    
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $report = Report::find($id);
+        try {
+            $report = Report::findOrFail($id);
 
-        if (!$report) {
+            $validated = $request->validate([
+                'report_type' => 'required|string',
+                'period_start' => 'required|date',
+                'period_end' => 'required|date|after_or_equal:period_start',
+                'generated_by' => 'required|exists:users,id',
+                'payload' => 'nullable|string',
+                'generated_at' => 'nullable|date',
+            ]);
+
+            $report->update($validated);
+
             return response()->json([
-                'message' => 'Report not found',
-            ], 404);
+                'message' => 'Report updated successfully',
+                'report' => $report,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to update report',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $validated = $request->validate([
-            'report_type' => 'required|string',
-            'period_start' => 'required|date',
-            'period_end' => 'required|date|after_or_equal:period_start',
-            'generated_by' => 'required|exists:users,id',
-            'payload' => 'nullable|string',
-            'generated_at' => 'nullable|date',
-        ]);
-
-        $report->update($validated);
-
-        return response()->json([
-            'message' => 'Report updated successfully',
-            'report' => $report,
-        ]);
     }
 
     /**
@@ -101,18 +113,18 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        $report = Report::find($id);
+        try {
+            $report = Report::findOrFail($id);
+            $report->delete();
 
-        if (!$report) {
             return response()->json([
-                'message' => 'Report not found',
-            ], 404);
+                'message' => 'Report deleted successfully',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to delete report',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $report->delete();
-
-        return response()->json([
-            'message' => 'Report deleted successfully',
-        ]);
     }
 }
