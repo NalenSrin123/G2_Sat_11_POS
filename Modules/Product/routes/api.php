@@ -22,3 +22,4 @@ Route::get('/ProductVisibility/{id}', [ProductVisibilityController::class, 'show
 Route::put('/ProductVisibility/{id}', [ProductVisibilityController::class, 'update']);
 Route::delete('/ProductVisibility/{id}' , [ProductVisibilityController::class, 'destroy']);
 Route::post('/ProductVisibility' , [ProductVisibilityController::class, 'store']);
+Route::post('/ProductVisibility' , [ProductVisibilityController::class, 'store']);
