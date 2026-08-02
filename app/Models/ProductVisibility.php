@@ -19,4 +19,8 @@ class ProductVisibility extends Model
     {
         return $this->belongsTo(Role::class);
     }
+    public function roles()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

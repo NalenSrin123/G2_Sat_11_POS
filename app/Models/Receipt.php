@@ -11,5 +11,6 @@ class Receipt extends Model
         'payment_id',
         'issued_by',
         'issued_at',
+        'hjkl'
     ];
 }

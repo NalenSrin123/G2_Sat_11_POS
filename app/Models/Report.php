@@ -18,6 +18,7 @@ class Report extends Model
         'generated_by',
         'payload',
         'generated_at',
+        'ghjklrtyht'
     ];
 
     protected $casts = [

@@ -12,6 +12,7 @@ class OrderStatusLog extends Model
         'old_status',
         'new_status',
         'changed_at',
+        'customer_id'
     ];
 
     public function order()
